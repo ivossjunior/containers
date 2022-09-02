@@ -12,6 +12,10 @@ LABEL org.opencontainers.image.authors="https://bitnami.com/contact" \
       org.opencontainers.image.vendor="VMware, Inc." \
       org.opencontainers.image.version="2.3.4"
 
+COPY /requirements.txt .
+RUN pip install --upgrade pip --user
+RUN pip install --no-cache-dir --requirement requirements.txt --user
+
 COPY prebuildfs /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install required system packages and dependencies

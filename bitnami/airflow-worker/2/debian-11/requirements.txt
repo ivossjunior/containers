@@ -1,0 +1,4 @@
+pymssql
+apache-airflow-providers-microsoft-mssql
+pyodbc
+sqlalchemy < 1.4.0
