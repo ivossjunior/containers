@@ -12,10 +12,6 @@ LABEL org.opencontainers.image.authors="https://bitnami.com/contact" \
       org.opencontainers.image.vendor="VMware, Inc." \
       org.opencontainers.image.version="2.3.4"
 
-COPY /requirements.txt .
-RUN pip install --upgrade pip --user
-RUN pip install --no-cache-dir --requirement requirements.txt --user
-
 COPY prebuildfs /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install required system packages and dependencies
@@ -69,6 +65,11 @@ RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8
 RUN update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
+
+RUN apt-get update && apt-get install -y python3-pip
+COPY /requirements.txt .
+RUN pip install --upgrade pip --user
+RUN pip install --no-cache-dir --requirement requirements.txt --user
 
 COPY rootfs /
 RUN /opt/bitnami/scripts/airflow-worker/postunpack.sh
